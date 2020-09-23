@@ -12,8 +12,9 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
-public class AddNewNoteActivity extends AppCompatActivity {
+public class AddEditNoteActivity extends AppCompatActivity {
 
+    public static final String EXTRA_ID_KEY="com.example.architecturecomponentes_practice.id_key";
     public static final String EXTRA_TITLE_KEY="com.example.architecturecomponentes_practice.title_key";
     public static final String EXTRA_DESCRIPTION_KEY="com.example.architecturecomponentes_practice.description_key";
     public static final String EXTRA_PRIORITY_KEY="com.example.architecturecomponentes_practice.priority_key";
@@ -27,16 +28,22 @@ public class AddNewNoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
-        setTitle("ACP");
 
         titleEditText = findViewById(R.id.editText_title);
         descriptionEditText = findViewById(R.id.editText_description);
         priorityNumberPicker = findViewById(R.id.numberPicker_priority);
+
         priorityNumberPicker.setMinValue(1);
         priorityNumberPicker.setMaxValue(10);
 
+        Intent intent=getIntent();
 
-
+        if (intent.hasExtra(EXTRA_ID_KEY)){
+            setTitle("Edit Note");
+            titleEditText.setText(intent.getStringExtra(EXTRA_TITLE_KEY));
+            descriptionEditText.setText(intent.getStringExtra(EXTRA_DESCRIPTION_KEY));
+            priorityNumberPicker.setValue(intent.getIntExtra(EXTRA_PRIORITY_KEY,1));
+        }else setTitle("Add Note");
 
     }
 
@@ -45,14 +52,18 @@ public class AddNewNoteActivity extends AppCompatActivity {
         String description = descriptionEditText.getText().toString();
         int priority = priorityNumberPicker.getValue();
         if (title.trim().isEmpty() || description.trim().isEmpty()){
-            Toast.makeText(this, "please enter a title and description", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please Enter a Title And Description", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent data=new Intent();
+        int id=getIntent().getIntExtra(EXTRA_ID_KEY,-1);
+        data.putExtra(EXTRA_ID_KEY,id);
         data.putExtra(EXTRA_TITLE_KEY,title);
         data.putExtra(EXTRA_DESCRIPTION_KEY,description);
         data.putExtra(EXTRA_PRIORITY_KEY,priority);
+
         setResult(RESULT_OK,data);
+
         finish();
 
     }

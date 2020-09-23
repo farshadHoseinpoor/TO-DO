@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,12 +16,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final int ADD_NOTE_REQUEST = 1;
+    public static final int EDIT_NOTE_REQUEST = 2;
 
     private NoteViewModel viewModel;
 
@@ -41,15 +45,15 @@ public class MainActivity extends AppCompatActivity {
                 adapter.setNotes(notes);
             }
         });
-        FloatingActionButton fab=findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,AddNewNoteActivity.class);
-                startActivityForResult(intent,ADD_NOTE_REQUEST);
+                Intent intent = new Intent(MainActivity.this, AddEditNoteActivity.class);
+                startActivityForResult(intent, ADD_NOTE_REQUEST);
             }
         });
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
@@ -58,10 +62,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 viewModel.delete(adapter.getNoteAt(viewHolder.getAbsoluteAdapterPosition()));
-                Toast.makeText(MainActivity.this, "deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
 
             }
         }).attachToRecyclerView(recyclerView);
+
+        adapter.setOnItemClickListener(new NoteAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(Note note) {
+                Intent intent = new Intent(MainActivity.this, AddEditNoteActivity.class);
+                intent.putExtra(AddEditNoteActivity.EXTRA_ID_KEY, note.getId());
+                intent.putExtra(AddEditNoteActivity.EXTRA_TITLE_KEY, note.getTitle());
+                intent.putExtra(AddEditNoteActivity.EXTRA_DESCRIPTION_KEY, note.getDescription());
+                intent.putExtra(AddEditNoteActivity.EXTRA_PRIORITY_KEY, note.getPriority());
+                startActivityForResult(intent, EDIT_NOTE_REQUEST);
+            }
+        });
 
     }
 
@@ -69,29 +85,47 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_NOTE_REQUEST && resultCode == RESULT_OK) {
-            String title=data.getStringExtra(AddNewNoteActivity.EXTRA_TITLE_KEY);
-            String description=data.getStringExtra(AddNewNoteActivity.EXTRA_DESCRIPTION_KEY);
-            int priority=data.getIntExtra(AddNewNoteActivity.EXTRA_PRIORITY_KEY,10);
-            Note note=new Note(title,description,priority);
+            String title = data.getStringExtra(AddEditNoteActivity.EXTRA_TITLE_KEY);
+            String description = data.getStringExtra(AddEditNoteActivity.EXTRA_DESCRIPTION_KEY);
+            int priority = data.getIntExtra(AddEditNoteActivity.EXTRA_PRIORITY_KEY, 10);
+            Note note = new Note(title, description, priority);
             viewModel.insert(note);
             Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
 
-        } else Toast.makeText(this,"Note not saved",Toast.LENGTH_SHORT).show();
+        }else if (requestCode==EDIT_NOTE_REQUEST && resultCode==RESULT_OK){
+            if (data.getIntExtra(AddEditNoteActivity.EXTRA_ID_KEY,-1) == -1){
+                Toast.makeText(this, "Can`t Update Note", Toast.LENGTH_SHORT).show();
+                return;
+
+            }
+            int id=data.getIntExtra(AddEditNoteActivity.EXTRA_ID_KEY,1);
+            String title = data.getStringExtra(AddEditNoteActivity.EXTRA_TITLE_KEY);
+            String description = data.getStringExtra(AddEditNoteActivity.EXTRA_DESCRIPTION_KEY);
+            int priority = data.getIntExtra(AddEditNoteActivity.EXTRA_PRIORITY_KEY, 10);
+            Note note = new Note(title, description, priority);
+            note.setId(id);
+
+
+            viewModel.update(note);
+            Toast.makeText(this, "Updated", Toast.LENGTH_SHORT).show();
+
+
+        } else Toast.makeText(this, "Note Not Saved", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.main_menu,menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.delete_all_icon:
                 viewModel.deleteAllNotes();
-                Toast.makeText(this, "All notes deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "All Notes Deleted", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
