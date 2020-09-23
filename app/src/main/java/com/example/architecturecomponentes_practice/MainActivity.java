@@ -93,12 +93,14 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
 
         }else if (requestCode==EDIT_NOTE_REQUEST && resultCode==RESULT_OK){
-            if (data.getIntExtra(AddEditNoteActivity.EXTRA_ID_KEY,-1) == -1){
+
+            int id=data.getIntExtra(AddEditNoteActivity.EXTRA_ID_KEY,-1);
+
+            if (id == -1){
                 Toast.makeText(this, "Can`t Update Note", Toast.LENGTH_SHORT).show();
                 return;
-
             }
-            int id=data.getIntExtra(AddEditNoteActivity.EXTRA_ID_KEY,1);
+
             String title = data.getStringExtra(AddEditNoteActivity.EXTRA_TITLE_KEY);
             String description = data.getStringExtra(AddEditNoteActivity.EXTRA_DESCRIPTION_KEY);
             int priority = data.getIntExtra(AddEditNoteActivity.EXTRA_PRIORITY_KEY, 10);
