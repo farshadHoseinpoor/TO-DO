@@ -1,4 +1,4 @@
-package com.example.architecturecomponentes_practice;
+package com.example.architecturecomponentes_practice.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Toast;
+
+import com.example.architecturecomponentes_practice.R;
 
 public class AddEditNoteActivity extends AppCompatActivity {
 

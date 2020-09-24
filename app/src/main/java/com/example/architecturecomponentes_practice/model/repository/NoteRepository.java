@@ -1,10 +1,13 @@
-package com.example.architecturecomponentes_practice;
+package com.example.architecturecomponentes_practice.model.repository;
 
 import android.app.Application;
-import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+
+import com.example.architecturecomponentes_practice.database.NoteDao;
+import com.example.architecturecomponentes_practice.database.NoteDataBase;
+import com.example.architecturecomponentes_practice.model.Note;
 
 import java.util.List;
 

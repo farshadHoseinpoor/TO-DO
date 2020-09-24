@@ -1,4 +1,4 @@
-package com.example.architecturecomponentes_practice;
+package com.example.architecturecomponentes_practice.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.architecturecomponentes_practice.model.Note;
+import com.example.architecturecomponentes_practice.viewmodels.NoteViewModel;
+import com.example.architecturecomponentes_practice.R;
+import com.example.architecturecomponentes_practice.adapters.NoteAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.architecturecomponentes_practice;
+package com.example.architecturecomponentes_practice.database;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -7,6 +7,8 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import com.example.architecturecomponentes_practice.model.Note;
 
 @Database(entities = {Note.class}, version = 1,exportSchema = false)
 public abstract class NoteDataBase extends RoomDatabase {

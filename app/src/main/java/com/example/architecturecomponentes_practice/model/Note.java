@@ -1,4 +1,4 @@
-package com.example.architecturecomponentes_practice;
+package com.example.architecturecomponentes_practice.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

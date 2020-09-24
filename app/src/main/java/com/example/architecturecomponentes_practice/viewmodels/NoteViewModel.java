@@ -1,10 +1,13 @@
-package com.example.architecturecomponentes_practice;
+package com.example.architecturecomponentes_practice.viewmodels;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.example.architecturecomponentes_practice.model.Note;
+import com.example.architecturecomponentes_practice.model.repository.NoteRepository;
 
 import java.util.List;
 

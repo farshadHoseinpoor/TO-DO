@@ -1,4 +1,4 @@
-package com.example.architecturecomponentes_practice;
+package com.example.architecturecomponentes_practice.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import com.example.architecturecomponentes_practice.model.Note;
+import com.example.architecturecomponentes_practice.R;
 
 public class NoteAdapter extends ListAdapter<Note, NoteAdapter.NoteViewHolder> {
 
