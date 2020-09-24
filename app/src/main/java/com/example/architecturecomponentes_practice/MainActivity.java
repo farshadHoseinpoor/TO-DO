@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel.getAllNotes().observe(this, new Observer<List<Note>>() {
             @Override
             public void onChanged(List<Note> notes) {
-                adapter.setNotes(notes);
+                adapter.submitList(notes);
             }
         });
         FloatingActionButton fab = findViewById(R.id.fab);
