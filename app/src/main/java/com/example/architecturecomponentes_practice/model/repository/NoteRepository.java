@@ -18,7 +18,6 @@ public class NoteRepository {
 
     public NoteRepository(Application application) {
 
-        // TODO: 20/09/20 check with origin code in noteDao part
         noteDao = NoteDataBase.getInstance(application).noteDao();
         allNotes = noteDao.getAllNotes();
 
